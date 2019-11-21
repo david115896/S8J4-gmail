@@ -10,6 +10,11 @@ class EmailsController < ApplicationController
   # GET /emails/1
   # GET /emails/1.json
   def show
+    @email.update(read: true)
+    respond_to do |format|
+      format.html {}
+      format.js {}
+    end
   end
 
   # GET /emails/new
@@ -24,12 +29,13 @@ class EmailsController < ApplicationController
   # POST /emails
   # POST /emails.json
   def create
-    @email = Email.new(email_params)
-
+    #@email = Email.new(email_params)
+    @email = Email.new(object: Faker::Book.author, body: Faker::Book.title)
     respond_to do |format|
       if @email.save
         format.html { redirect_to @email, notice: 'Email was successfully created.' }
         format.json { render :show, status: :created, location: @email }
+        format.js {}
       else
         format.html { render :new }
         format.json { render json: @email.errors, status: :unprocessable_entity }
@@ -40,14 +46,10 @@ class EmailsController < ApplicationController
   # PATCH/PUT /emails/1
   # PATCH/PUT /emails/1.json
   def update
+    @email.update(read: false)
     respond_to do |format|
-      if @email.update(email_params)
-        format.html { redirect_to @email, notice: 'Email was successfully updated.' }
-        format.json { render :show, status: :ok, location: @email }
-      else
-        format.html { render :edit }
-        format.json { render json: @email.errors, status: :unprocessable_entity }
-      end
+      format.html { redirect_to @email, notice: 'Email was successfully updated.' }      
+      format.js {}
     end
   end
 
@@ -58,6 +60,7 @@ class EmailsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to emails_url, notice: 'Email was successfully destroyed.' }
       format.json { head :no_content }
+      format.js {}
     end
   end
 

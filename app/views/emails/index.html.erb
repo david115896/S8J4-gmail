@@ -1,25 +1,33 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Emails</h1>
+<div class="container"> 
+  <h1>Emails</h1>
+  <%= link_to 'Envoyer un email', emails_path, method: :post, remote: true %>
+</div>
 
-<table>
-  <thead>
-    <tr>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @emails.each do |email| %>
+<div class="row p-5">
+  <table class="table table-striped table-dark col-6 ">
+    <thead>
       <tr>
-        <td><%= link_to 'Show', email %></td>
-        <td><%= link_to 'Edit', edit_email_path(email) %></td>
-        <td><%= link_to 'Destroy', email, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <th scope="col">Liste des emails</th>
+        <th scope="col">Email selectionne</th>
+    
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+    <% @emails.each do |email| %>
+        <tr>
+            <% if email.read == false %>
+              <td id=<%=email.id%>><%= link_to email.object, email_path(email.id), remote: true %></td>
+            <% else %>
+              <td id=<%=email.id%>><%= link_to email.object, email_path(email.id), class: "text-white", remote: true %></td>
+            <% end %>  
+        </tr>
+      <% end %>  
+    </tbody>
+  </table>
 
+</div>
 <br>
 
 <%= link_to 'New Email', new_email_path %>
